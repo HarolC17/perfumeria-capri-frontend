@@ -1,0 +1,150 @@
+.admin-products-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.admin-products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.admin-products-header h1 {
+    color: #2c3e50;
+}
+
+.product-form-container {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.product-form-container h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.product-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.products-table-container {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.products-table th {
+    background-color: #2c3e50;
+    color: white;
+    font-weight: 600;
+}
+
+.products-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.stock-ok {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+.stock-low {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+.btn-restock {
+    padding: 0.5rem 1rem;
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition: opacity 0.3s;
+}
+
+.btn-restock:hover {
+    opacity: 0.8;
+}
+
+/* Estilos para el display de URL */
+.image-url-display {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
+
+.image-url-display a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.image-url-display a:hover {
+    text-decoration: underline;
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .product-form {
+        grid-template-columns: 1fr;
+    }
+}

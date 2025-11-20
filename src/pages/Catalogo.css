@@ -1,0 +1,165 @@
+.catalogo-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+.catalogo-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.catalogo-header h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #2c3e50;
+    margin: 0 0 0.5rem 0;
+    font-family: 'Georgia', serif;
+}
+
+.catalogo-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+}
+
+/* =============================
+   FILTROS
+============================= */
+.filters-section {
+    background-color: #f8f8f8;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 3rem;
+}
+
+.filters-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto; /* ✅ 5 columnas */
+    gap: 1.5rem;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search-input,
+.sort-select {
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+    transition: border-color 0.3s;
+}
+
+.search-input:focus,
+.sort-select:focus {
+    outline: none;
+    border-color: #d4af37;
+}
+
+.clear-filters-button {
+    padding: 0.8rem 1.5rem;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.clear-filters-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* =============================
+   GRID DE PRODUCTOS
+============================= */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+/* =============================
+   SIN PRODUCTOS
+============================= */
+.no-products {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #666;
+}
+
+.no-products p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.reset-search-button {
+    padding: 0.8rem 2rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reset-search-button:hover {
+    background-color: #2980b9;
+}
+
+/* =============================
+   RESPONSIVE
+============================= */
+@media (max-width: 1200px) {
+    .filters-container {
+        grid-template-columns: 1fr 1fr; /* 2 columnas en pantallas medianas */
+    }
+
+    .clear-filters-button {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .catalogo-header h1 {
+        font-size: 2rem;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .filters-container {
+        grid-template-columns: 1fr; /* 1 columna en móvil */
+    }
+
+    .filters-section {
+        padding: 1.5rem 1rem;
+    }
+}
