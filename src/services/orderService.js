@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const PEDIDO_URL = 'http://localhost:1212/api/perfumeria/pedido';
-const PAGO_URL = 'http://localhost:1212/api/perfumeria/pago';
+const API_URL = import.meta.env.VITE_API_ORDER_URL || 'http://localhost:1212';
+const PEDIDO_URL = `${API_URL}/api/perfumeria/pedido`;
+const PAGO_URL   = `${API_URL}/api/perfumeria/pago`;
 
 export const createOrder = async (usuarioId, direccionEnvio) => {
     const response = await axios.post(`${PEDIDO_URL}/crear`, {
