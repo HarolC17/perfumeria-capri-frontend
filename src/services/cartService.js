@@ -42,9 +42,3 @@ export const sellCart = async (usuarioId) => {
     const response = await axios.post(`${CARRITO_ENDPOINT}/vender/${usuarioId}`);
     return response.data;
 };
-
-// Vender carrito (confirmar venta)
-export const sellCart = async (usuarioId) => {
-    const response = await axios.post(`${API_URL}/vender/${usuarioId}`);
-    return response.data;
-};
