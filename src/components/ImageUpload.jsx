@@ -6,9 +6,9 @@ function ImageUpload({ onImageUploaded, currentImage }) {
     const [previewUrl, setPreviewUrl] = useState(currentImage || '');
     const [error, setError] = useState('');
 
-    // ⚠️ REEMPLAZA con tu Cloud Name de Cloudinary
-    const CLOUDINARY_UPLOAD_PRESET = 'perfumeria_capri';
-    const CLOUDINARY_CLOUD_NAME = 'dypnyi24b'; // ⬅️ CÁMBIALO AQUÍ
+    // ✅ Leer desde variables de entorno
+    const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'perfumeria_capri';
+    const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dypnyi24b';
 
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
