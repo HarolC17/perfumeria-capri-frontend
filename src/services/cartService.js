@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:1111/api/perfumeria/carrito';
+const API_URL = import.meta.env.VITE_API_CATALOG_URL || 'http://localhost:1111';
+const CARRITO_ENDPOINT = `${API_URL}/api/perfumeria/carrito`;
 
 // Agregar producto al carrito
 export const addToCart = async (usuarioId, productoId, cantidad) => {
     const response = await axios.post(
-        `${API_URL}/agregar`,
+        `${CARRITO_ENDPOINT}/agregar`,
         { productoId, cantidad },
         { params: { usuarioId } }
     );
@@ -14,7 +15,7 @@ export const addToCart = async (usuarioId, productoId, cantidad) => {
 
 // Ver carrito del usuario
 export const getCart = async (usuarioId) => {
-    const response = await axios.get(`${API_URL}/ver`, {
+    const response = await axios.get(`${CARRITO_ENDPOINT}/ver`, {
         params: { usuarioId }
     });
     return response.data;
@@ -22,7 +23,7 @@ export const getCart = async (usuarioId) => {
 
 // Vaciar carrito
 export const clearCart = async (usuarioId) => {
-    const response = await axios.delete(`${API_URL}/vaciar`, {
+    const response = await axios.delete(`${CARRITO_ENDPOINT}/vaciar`, {
         params: { usuarioId }
     });
     return response.data;
@@ -30,9 +31,15 @@ export const clearCart = async (usuarioId) => {
 
 // Eliminar producto del carrito
 export const removeFromCart = async (usuarioId, productoId) => {
-    const response = await axios.delete(`${API_URL}/eliminar/${productoId}`, {
+    const response = await axios.delete(`${CARRITO_ENDPOINT}/eliminar/${productoId}`, {
         params: { usuarioId }
     });
+    return response.data;
+};
+
+// Vender carrito (confirmar venta)
+export const sellCart = async (usuarioId) => {
+    const response = await axios.post(`${CARRITO_ENDPOINT}/vender/${usuarioId}`);
     return response.data;
 };
 
