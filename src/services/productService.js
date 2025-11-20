@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_CATALOG_URL || 'http://localhost:1111';
 const PRODUCTOS_ENDPOINT = `${API_URL}/api/perfumeria/producto`;
 
-export const getAllProducts = async (page = 0, size = 12) => {
+export const getAllProducts = async (page = 0, size = 50) => {
     const response = await axios.get(`${PRODUCTOS_ENDPOINT}/all`, {
         params: { page, size }
     });
@@ -15,7 +15,7 @@ export const getProductById = async (id) => {
     return response.data;
 };
 
-export const searchByBrand = async (marca, page = 0, size = 12) => {
+export const searchByBrand = async (marca, page = 0, size = 50) => {
     const response = await axios.post(`${PRODUCTOS_ENDPOINT}/buscar/marca`, {
         valor: marca,
         page,
@@ -24,7 +24,7 @@ export const searchByBrand = async (marca, page = 0, size = 12) => {
     return response.data;
 };
 
-export const searchByType = async (tipo, page = 0, size = 12) => {
+export const searchByType = async (tipo, page = 0, size = 50) => {
     const response = await axios.post(`${PRODUCTOS_ENDPOINT}/buscar/tipo`, {
         valor: tipo,
         page,
@@ -33,7 +33,7 @@ export const searchByType = async (tipo, page = 0, size = 12) => {
     return response.data;
 };
 
-export const searchByName = async (nombre, page = 0, size = 12) => {
+export const searchByName = async (nombre, page = 0, size = 50) => {
     const response = await axios.post(`${PRODUCTOS_ENDPOINT}/buscar/nombre`, {
         valor: nombre,
         page,

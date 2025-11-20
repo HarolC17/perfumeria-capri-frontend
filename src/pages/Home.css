@@ -157,8 +157,11 @@
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* ✅ 4 columnas en desktop */
     gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
 .no-products {
@@ -216,11 +219,11 @@
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
-.brand-carolina .category-image {
+.brand-streamers .category-image {
     background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
 }
 
-.brand-chanel .category-image {
+.brand-valentino .category-image {
     background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
 }
 

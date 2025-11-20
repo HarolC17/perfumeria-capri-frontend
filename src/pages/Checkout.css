@@ -146,6 +146,34 @@
     color: #7f8c8d;
     font-size: 0.9rem;
 }
+.error-message {
+    background: linear-gradient(135deg, #fee 0%, #fdd 100%);
+    border-left: 5px solid #e74c3c;
+    color: #c33;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    white-space: pre-line;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-message::before {
+    font-size: 1.4rem;
+    margin-right: 0.5rem;
+}
 
 @media (max-width: 768px) {
     .checkout-content {

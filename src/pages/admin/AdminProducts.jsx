@@ -103,6 +103,7 @@ function AdminProducts() {
 
             resetForm();
             loadProducts();
+
         } catch (err) {
             setError(editingProduct ? 'Error al actualizar producto' : 'Error al crear producto');
             console.error(err);
@@ -197,7 +198,6 @@ function AdminProducts() {
                             <input
                                 type="number"
                                 step="100"
-                                min="1"
                                 value={formData.precio}
                                 onChange={(e) => setFormData({...formData, precio: e.target.value})}
                                 placeholder="Ej: 150"
@@ -210,7 +210,6 @@ function AdminProducts() {
                             <input
                                 type="number"
                                 step="10"
-                                min="0"
                                 value={formData.stock}
                                 onChange={(e) => setFormData({...formData, stock: e.target.value})}
                                 placeholder="Ej: 50"

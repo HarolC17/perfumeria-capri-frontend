@@ -18,8 +18,16 @@ function Home() {
         try {
             setLoading(true);
             const data = await getAllProducts();
-            // ✅ Mostrar solo los primeros 5 productos
-            setProducts(data.slice(0, 5));
+
+            // ✅ CORREGIDO: Mezclar 'data' en lugar de 'products'
+            const shuffled = [...data]; // Usar 'data' que tiene los productos
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+
+            // ✅ Mostrar solo los primeros 9 productos aleatorios
+            setProducts(shuffled.slice(0, 9));
             setError('');
         } catch (err) {
             setError('Error al cargar los productos');
@@ -142,7 +150,7 @@ function Home() {
 
                     <div
                         className="category-card brand-armani"
-                        onClick={() => navigate('/catalogo?marca=Armani')}
+                        onClick={() => navigate('/catalogo?marca=Giorgio Armani')}
                     >
                         <div className="category-image">
                             <div className="category-overlay">
@@ -153,24 +161,24 @@ function Home() {
                     </div>
 
                     <div
-                        className="category-card brand-carolina"
-                        onClick={() => navigate('/catalogo?marca=Carolina Herrera')}
+                        className="category-card brand-streamers"
+                        onClick={() => navigate('/catalogo?marca=Streamers')}
                     >
                         <div className="category-image">
                             <div className="category-overlay">
-                                <h3>Carolina Herrera</h3>
+                                <h3>Streamers</h3>
                                 <button className="category-button">Ver Más</button>
                             </div>
                         </div>
                     </div>
 
                     <div
-                        className="category-card brand-chanel"
-                        onClick={() => navigate('/catalogo?marca=Chanel')}
+                        className="category-card brand-valentino"
+                        onClick={() => navigate('/catalogo?marca=Valentino')}
                     >
                         <div className="category-image">
                             <div className="category-overlay">
-                                <h3>Chanel</h3>
+                                <h3>Valentino</h3>
                                 <button className="category-button">Ver Más</button>
                             </div>
                         </div>
@@ -189,7 +197,6 @@ function Home() {
                     </div>
                 </div>
             </section>
-
 
             {/* Footer Info */}
             <section className="info-section">

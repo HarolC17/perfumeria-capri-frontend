@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom'; // ✅ Agregar useSearchParams
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getAllProducts } from '../services/productService';
 import ProductCard from '../components/ProductCard';
 import './Catalogo.css';
 
 function Catalogo() {
     const navigate = useNavigate();
-    const [searchParams] = useSearchParams(); // ✅ NUEVO
+    const [searchParams] = useSearchParams();
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -15,19 +15,22 @@ function Catalogo() {
     // Filtros
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedType, setSelectedType] = useState('');
-    const [selectedMarca, setSelectedMarca] = useState(''); // ✅ NUEVO
+    const [selectedMarca, setSelectedMarca] = useState('');
     const [sortBy, setSortBy] = useState('nombre');
+
+    // ✅ PAGINACIÓN
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productsPerPage] = useState(9); // 12 productos por página
 
     // Obtener tipos y marcas únicos
     const [types, setTypes] = useState([]);
-    const [marcas, setMarcas] = useState([]); // ✅ NUEVO
+    const [marcas, setMarcas] = useState([]);
 
     useEffect(() => {
         loadProducts();
     }, []);
 
     useEffect(() => {
-        // ✅ Leer marca de la URL al cargar
         const marcaFromUrl = searchParams.get('marca');
         if (marcaFromUrl) {
             setSelectedMarca(marcaFromUrl);
@@ -36,19 +39,19 @@ function Catalogo() {
 
     useEffect(() => {
         applyFilters();
+        setCurrentPage(1); // ✅ Resetear a página 1 cuando cambien filtros
     }, [products, searchTerm, selectedType, selectedMarca, sortBy]);
 
     const loadProducts = async () => {
         try {
             setLoading(true);
             const data = await getAllProducts();
+
             setProducts(data);
 
-            // Extraer tipos únicos
             const uniqueTypes = [...new Set(data.map(p => p.tipo).filter(Boolean))];
             setTypes(uniqueTypes);
 
-            // ✅ Extraer marcas únicas
             const uniqueMarcas = [...new Set(data.map(p => p.marca).filter(Boolean))];
             setMarcas(uniqueMarcas);
 
@@ -64,7 +67,6 @@ function Catalogo() {
     const applyFilters = () => {
         let filtered = [...products];
 
-        // Filtro de búsqueda
         if (searchTerm) {
             filtered = filtered.filter(product =>
                 product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -72,17 +74,14 @@ function Catalogo() {
             );
         }
 
-        // Filtro por tipo
         if (selectedType) {
             filtered = filtered.filter(product => product.tipo === selectedType);
         }
 
-        // ✅ Filtro por marca
         if (selectedMarca) {
             filtered = filtered.filter(product => product.marca === selectedMarca);
         }
 
-        // Ordenamiento
         switch (sortBy) {
             case 'precio-asc':
                 filtered.sort((a, b) => a.precio - b.precio);
@@ -102,9 +101,21 @@ function Catalogo() {
     const clearFilters = () => {
         setSearchTerm('');
         setSelectedType('');
-        setSelectedMarca(''); // ✅ NUEVO
+        setSelectedMarca('');
         setSortBy('nombre');
-        navigate('/catalogo'); // ✅ Limpiar URL
+        setCurrentPage(1);
+        navigate('/catalogo');
+    };
+
+    // ✅ LÓGICA DE PAGINACIÓN
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // ✅ Scroll al tope
     };
 
     if (loading) {
@@ -124,7 +135,6 @@ function Catalogo() {
             {/* Filtros */}
             <div className="filters-section">
                 <div className="filters-container">
-                    {/* Búsqueda */}
                     <div className="filter-group">
                         <label>Buscar</label>
                         <input
@@ -136,7 +146,6 @@ function Catalogo() {
                         />
                     </div>
 
-                    {/* ✅ Filtro por Marca */}
                     <div className="filter-group">
                         <label>Marca</label>
                         <select
@@ -146,14 +155,11 @@ function Catalogo() {
                         >
                             <option value="">Todas las marcas</option>
                             {marcas.map(marca => (
-                                <option key={marca} value={marca}>
-                                    {marca}
-                                </option>
+                                <option key={marca} value={marca}>{marca}</option>
                             ))}
                         </select>
                     </div>
 
-                    {/* Filtro por Tipo/Categoría */}
                     <div className="filter-group">
                         <label>Categoría</label>
                         <select
@@ -163,14 +169,11 @@ function Catalogo() {
                         >
                             <option value="">Todas las categorías</option>
                             {types.map(type => (
-                                <option key={type} value={type}>
-                                    {type}
-                                </option>
+                                <option key={type} value={type}>{type}</option>
                             ))}
                         </select>
                     </div>
 
-                    {/* Ordenar */}
                     <div className="filter-group">
                         <label>Ordenar por</label>
                         <select
@@ -184,12 +187,8 @@ function Catalogo() {
                         </select>
                     </div>
 
-                    {/* Limpiar filtros */}
                     {(searchTerm || selectedType || selectedMarca || sortBy !== 'nombre') && (
-                        <button
-                            onClick={clearFilters}
-                            className="clear-filters-button"
-                        >
+                        <button onClick={clearFilters} className="clear-filters-button">
                             Limpiar Filtros
                         </button>
                     )}
@@ -203,24 +202,56 @@ function Catalogo() {
                 <div className="no-products">
                     <p>No se encontraron productos</p>
                     {(searchTerm || selectedType || selectedMarca) && (
-                        <button
-                            onClick={clearFilters}
-                            className="reset-search-button"
-                        >
+                        <button onClick={clearFilters} className="reset-search-button">
                             Limpiar búsqueda
                         </button>
                     )}
                 </div>
             ) : (
-                <div className="products-grid">
-                    {filteredProducts.map((product) => (
-                        <ProductCard
-                            key={product.id}
-                            product={product}
-                            onClick={() => navigate(`/product/${product.id}`)}
-                        />
-                    ))}
-                </div>
+                <>
+                    <div className="products-grid">
+                        {currentProducts.map((product) => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                onClick={() => navigate(`/product/${product.id}`)}
+                            />
+                        ))}
+                    </div>
+
+                    {/* ✅ PAGINACIÓN */}
+                    {totalPages > 1 && (
+                        <div className="pagination">
+                            <button
+                                onClick={() => paginate(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                className="pagination-button"
+                            >
+                                ← Anterior
+                            </button>
+
+                            <div className="pagination-numbers">
+                                {[...Array(totalPages)].map((_, index) => (
+                                    <button
+                                        key={index + 1}
+                                        onClick={() => paginate(index + 1)}
+                                        className={`pagination-number ${currentPage === index + 1 ? 'active' : ''}`}
+                                    >
+                                        {index + 1}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <button
+                                onClick={() => paginate(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                className="pagination-button"
+                            >
+                                Siguiente →
+                            </button>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );

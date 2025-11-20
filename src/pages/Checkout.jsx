@@ -38,7 +38,6 @@ function Checkout() {
             setLoading(false);
         }
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -55,13 +54,60 @@ function Checkout() {
 
             alert(`¡Pedido creado exitosamente! ID: ${pedido.id}`);
             navigate('/orders');
+
         } catch (err) {
-            setError('Error al crear el pedido');
-            console.error(err);
+            console.error('❌ Error completo:', err);
+            console.error('❌ Response:', err.response);
+            console.error('❌ Data:', err.response?.data);
+
+            if (err.response?.status === 400) {
+                const errorData = err.response?.data;
+
+                // Extraer mensaje (funciona con tu formato)
+                const errorMessage =
+                    errorData?.mensaje ||       // ✅ Tu backend usa "mensaje"
+                    errorData?.message ||
+                    errorData?.error ||
+                    'Error al crear el pedido';
+
+                console.log('📝 Mensaje final:', errorMessage);
+
+                // Verificar si es error de stock
+                const esErrorDeStock =
+                    errorMessage.toLowerCase().includes('stock') ||
+                    errorMessage.toLowerCase().includes('insuficiente');
+
+                console.log('🔍 ¿Es error de stock?', esErrorDeStock);
+
+                if (esErrorDeStock) {
+                    console.log('✅ Mostrando mensaje de stock');
+                    setError(`⚠️ Stock Insuficiente\n\n${errorMessage}\n\nPor favor, actualiza las cantidades en tu carrito o elimina productos sin stock disponible.`);
+
+                    // Redirigir al carrito después de 4 segundos
+                    setTimeout(() => {
+                        console.log('🔄 Redirigiendo al carrito...');
+                        navigate('/cart');
+                    }, 4000);
+                } else {
+                    console.log('⚠️ Mostrando mensaje genérico');
+                    setError(errorMessage);
+                }
+
+            } else if (err.response?.status === 404) {
+                setError('No se encontró tu carrito. Por favor, intenta de nuevo.');
+            } else if (err.response?.status === 500) {
+                setError('Error interno del servidor. Por favor, intenta de nuevo más tarde.');
+            } else {
+                setError('Error al crear el pedido. Por favor, intenta de nuevo.');
+            }
+
         } finally {
             setSubmitting(false);
         }
     };
+
+
+
 
     if (loading) {
         return <div className="loading">Cargando...</div>;

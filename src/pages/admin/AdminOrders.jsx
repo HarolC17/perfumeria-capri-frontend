@@ -229,7 +229,7 @@ function AdminOrders() {
                             </div>
 
                             <div className="order-actions">
-                                <button onClick={() => openModal(order)} className="btn-manage">
+                                <button onClick={() => openModal(order)} className="btn-manage-order">
                                     📦 Gestionar Pedido
                                 </button>
                             </div>
